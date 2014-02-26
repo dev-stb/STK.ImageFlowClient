@@ -1,0 +1,125 @@
+﻿<Window x:Class="STK.ImageFlowClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ImageFlow" Height="479" Width="684.75" 
+        KeyDown="Window_KeyDown"
+        Closing="Window_Closing">
+    <Grid Name="layoutGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
+            <GroupBox Header="Options">
+                <StackPanel>
+                    <Label FontWeight="Bold"  >Source URL:</Label>
+                    <TextBox Name="optSourceURL">http://konachan.net</TextBox>
+                    <Label FontWeight="Bold"  >Tags:</Label>
+                    <ListBox Name="optTagsList" Margin="0,0,10,0">
+                        <ListBoxItem>
+                            <TextBox Foreground="Gray" Width="125" LostFocus="LBTB_LostFocus" GotFocus="LBTB_Focus" KeyDown="LBTB_KeyDown" Tag="Neues Tag">Neues Tag</TextBox>
+                        </ListBoxItem>
+                    </ListBox>
+                    <Label FontWeight="Bold"  >Save Location:</Label>
+                    <TextBox Name="optSaveLocation" MouseDoubleClick="saveLocation_MouseDoubleClick" />
+                    <CheckBox IsChecked="True" Content="Auto save" ToolTip="Speichere die Suche automatisch sofern sie einmal gespeichert wurde." Name="optAutoSave"/>
+                    <Button Content="Start Flow" Click="btnStartSearch_Click"></Button>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <CheckBox x:Name="chkViewAdvanced" FontWeight="Bold" Checked="chkViewAdvanced_Checked">Advanced</CheckBox>
+                        </GroupBox.Header>
+                        <StackPanel IsEnabled="{Binding ElementName=chkViewAdvanced, Path=IsChecked}">
+                            <Label FontWeight="Bold"  >Rating:</Label>
+                            <CheckBox IsChecked="True" Unchecked="safeRatingCheck" Checked="safeRatingCheck">Safe</CheckBox>
+                            <CheckBox IsChecked="False" Unchecked="questionableRatingCheck" Checked="questionableRatingCheck">Qstionable</CheckBox>
+                            <CheckBox IsChecked="False" Unchecked="explicitRatingCheck" Checked="explicitRatingCheck">Explicit</CheckBox>
+                            <CheckBox IsChecked="False" Unchecked="otherRatingCheck" Checked="otherRatingCheck">Other</CheckBox>
+                        </StackPanel >
+                    </GroupBox>
+                </StackPanel >
+            </GroupBox>
+            <GroupBox Name="imgInfo" Header="Image Info" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0">Link:</Label>
+                    <TextBlock Grid.Column="1" Grid.Row="0" TextAlignment="Left" VerticalAlignment="Center">
+                        <Hyperlink Language="en-en" Name="imgInfoLnk" >
+                            <Label Name="imgInfoLnkLbl">http://sklampt.de</Label>
+                        </Hyperlink>
+                    </TextBlock>
+                    <Label Grid.Column="0" Grid.Row="1">Rating:</Label>
+                    <Label Grid.Column="1" Grid.Row="1" Name="imgInfoRating"></Label>
+                    <Label Grid.Column="0" Grid.Row="2">Tags:</Label>
+                    <WrapPanel  Grid.Column="1" Grid.Row="2" >
+                        <ListBox Name="imgInfoTags" />
+                    </WrapPanel>
+                </Grid>
+            </GroupBox>
+        </StackPanel >
+        <WrapPanel 
+            Grid.Column="1"
+            Grid.Row="0" >
+
+            <Button
+                Content="Save Image" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                Height="45"
+                Click="Save_Click"/>
+
+            <Button
+                Content="Previous" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                Height="45"
+                Click="Previous_Click"/>
+
+            <Button
+                Content="Play" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                Height="45" 
+                Click="PlayStop_Click"
+                Name="btnPlayStop"/>
+
+            <Button
+                Content="Next" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                Height="45"
+                Click="Next_Click"/>
+            <StackPanel>
+                <Label FontWeight="Bold"  Height="25">Go to ID:</Label>
+                <TextBox x:Name="optGoToID" KeyDown="optGoToID_KeyDown" />
+            </StackPanel>
+        </WrapPanel>
+        <Image Grid.Column="1" Grid.Row="1" Margin="0,2,10,18" Name="imgView" Grid.RowSpan="2" />
+        <StatusBar Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2">
+            <DockPanel>
+                <StatusBarItem DockPanel.Dock="Left">DB:</StatusBarItem>
+                <StatusBarItem DockPanel.Dock="Left" Name="statisticsDB" ToolTip="Datenbank: Gescannte Elemente / Gesamt DB">0/0</StatusBarItem>
+            </DockPanel>
+            <StatusBarItem >
+                <CheckBox Name="isDownloaded" ToolTip="Downloaded" IsEnabled="False"></CheckBox>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
