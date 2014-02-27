@@ -221,17 +221,22 @@ namespace STK.ImageFlowClient
             if (source == null)
                 throw new ArgumentNullException("Source");
 
+            FlowImage ret = null;
+
             int del = selectPrevIndex(selectPrevIndex(selectPrevIndex(Index)));
             if (DB.Count > del)
                 DB[del].Deletable();
             int next = Index = selectNextIndex(Index);
-            FlowImage ret = DB[next];
-            for (int i = 1; i <= 5; i++)
-            {
-                next = selectNextIndex(next + 1);
-                DB[next].Prepare();
-            }
 
+            if (DB.Count > next)
+            {
+                ret = DB[next];
+                for (int i = 1; i <= 5; i++)
+                {
+                    next = selectNextIndex(next + 1);
+                    DB[next].Prepare();
+                }
+            }
             return ret;
         }
 
@@ -270,7 +275,7 @@ namespace STK.ImageFlowClient
             int prev = Index = selectPrevIndex(Index);
             FlowImage ret = DB[prev];
             return ret;
-        }      
+        }
     }
 }
 
